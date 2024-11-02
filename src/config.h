@@ -47,14 +47,14 @@ enum customLockActions
 #define HOMEKEY_COLOR TAN
 #define SETUP_CODE "46637726"  // HomeKit Setup Code (only for reference, has to be changed during WiFi Configuration or from WebUI)
 #define OTA_PWD "homespan-ota" //custom password for ota
-#define DEVICE_NAME "HK" //Device name
+#define DEVICE_NAME "Jarvis" //Device name
 #define HOMEKEY_ALWAYS_UNLOCK 0 // Flag indicating if a successful Homekey authentication should always set and publish the unlock state
 #define HOMEKEY_ALWAYS_LOCK 0  // Flag indicating if a successful Homekey authentication should always set and publish the lock state
-#define HS_STATUS_LED 255 // HomeSpan Status LED GPIO pin
+#define HS_STATUS_LED 8 // HomeSpan Status LED GPIO pin
 #define HS_PIN 255 // GPIO Pin for a Configuration Mode button (more info on https://github.com/HomeSpan/HomeSpan/blob/master/docs/UserGuide.md#device-configuration-mode)
 
 // Actions
-#define NFC_NEOPIXEL_PIN 255 // GPIO Pin used for NeoPixel
+#define NFC_NEOPIXEL_PIN 8 // GPIO Pin used for NeoPixel
 #define NEOPIXEL_SUCCESS_R 0 // Color value for Red - Success HK Auth
 #define NEOPIXEL_SUCCESS_G 255 // Color value for Green - Success HK Auth
 #define NEOPIXEL_SUCCESS_B 0 // Color value for Blue - Success HK Auth
@@ -78,4 +78,4 @@ enum customLockActions
 // WebUI
 #define WEB_AUTH_ENABLED false
 #define WEB_AUTH_USERNAME "admin"
-#define WEB_AUTH_PASSWORD "password"
+#define WEB_AUTH_PASSWORD "jarvis"

@@ -635,8 +635,8 @@ void mqtt_connected_event(void* event_handler_arg, esp_event_base_t event_base, 
     std::string id = identifier;
     device["identifiers"].push_back(id);
     device["identifiers"].push_back(serialNumber);
-    device["manufacturer"] = "rednblkx";
-    device["model"] = "HomeKey-ESP32";
+    device["manufacturer"] = "jiv.co";
+    device["model"] = "Jarvis";
     device["sw_version"] = app_version.c_str();
     device["serial_number"] = serialNumber;
     payload["device"] = device;
@@ -1670,14 +1670,14 @@ void setup() {
   new SpanAccessory();
   new Service::AccessoryInformation();
   new Characteristic::Identify();
-  new Characteristic::Manufacturer("rednblkx");
-  new Characteristic::Model("HomeKey-ESP32");
+  new Characteristic::Manufacturer("jiv.co");
+  new Characteristic::Model("Jarvis");
   new Characteristic::Name(DEVICE_NAME);
   uint8_t mac[6];
   WiFi.macAddress(mac);
   char macStr[18] = { 0 };
   sprintf(macStr, "%02X%02X%02X%02X", mac[0], mac[1], mac[2], mac[3]);
-  std::string serialNumber = "HK-";
+  std::string serialNumber = "jiv-";
   serialNumber.append(macStr);
   new Characteristic::SerialNumber(serialNumber.c_str());
   new Characteristic::FirmwareRevision(app_version.c_str());
