@@ -6,6 +6,16 @@ enum HK_COLOR
   BLACK
 };
 
+enum lockStates
+{
+  UNLOCKED,
+  LOCKED,
+  JAMMED,
+  UNKNOWN,
+  UNLOCKING,
+  LOCKING
+};
+
 enum customLockStates
 {
   C_LOCKED = 1,
@@ -20,6 +30,14 @@ enum customLockActions
 {
   UNLOCK = 1,
   LOCK = 2
+};
+
+enum class gpioMomentaryStateStatus : uint8_t
+{
+  M_DISABLED = 0,
+  M_HOME = 1 << 0,
+  M_HK = 1 << 1,
+  M_HOME_HK = (uint8_t)(M_HOME | M_HK)
 };
 
 // MQTT Broker Settings
@@ -42,6 +60,7 @@ enum customLockActions
 #define MQTT_SET_TARGET_STATE_TOPIC "homekit/set_target_state" // MQTT Control Topic for the HomeKit lock target state
 #define MQTT_SET_CURRENT_STATE_TOPIC "homekit/set_current_state" // MQTT Control Topic for the HomeKit lock current state
 #define MQTT_STATE_TOPIC "homekit/state" // MQTT Topic for publishing the HomeKit lock target state
+#define MQTT_PROX_BAT_TOPIC "homekit/set_battery_lvl" // MQTT Topic for publishing the HomeKit lock target state
 
 // Miscellaneous
 #define HOMEKEY_COLOR TAN
@@ -72,10 +91,9 @@ enum customLockActions
 #define GPIO_ACTION_PIN 20
 #define GPIO_ACTION_LOCK_STATE LOW
 #define GPIO_ACTION_UNLOCK_STATE HIGH
-#define GPIO_ACTION_MOMENTARY_STATE false
-#define GPIO_ACTION_MOMENTARY_TIMEOUT 1000
-
 #define GPIO_CONTACT_SENSOR_PIN 255
+#define GPIO_ACTION_MOMENTARY_STATE static_cast<uint8_t>(gpioMomentaryStateStatus::M_DISABLED)
+#define GPIO_ACTION_MOMENTARY_TIMEOUT 1000
 
 // WebUI
 #define WEB_AUTH_ENABLED false
