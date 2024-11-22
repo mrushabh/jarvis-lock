@@ -39,6 +39,7 @@ QueueHandle_t gpio_lock_handle = nullptr;
 TaskHandle_t *gpio_led_task_handle = nullptr;
 TaskHandle_t *neopixel_task_handle = nullptr;
 TaskHandle_t *gpio_lock_task_handle = nullptr;
+TaskHandle_t *gpio_contact_sensor_task_handle = nullptr;
 
 nvs_handle savedData;
 readerData_t readerData;
@@ -126,10 +127,11 @@ namespace espConfig
     bool gpioActionUnlockState = GPIO_ACTION_UNLOCK_STATE;
     bool gpioActionMomentaryEnabled = GPIO_ACTION_MOMENTARY_STATE;
     uint16_t gpioActionMomentaryTimeout = GPIO_ACTION_MOMENTARY_TIMEOUT;
+    uint8_t gpioContactSensorPin = GPIO_CONTACT_SENSOR_PIN;
     bool webAuthEnabled = WEB_AUTH_ENABLED;
     std::string webUsername = WEB_AUTH_USERNAME;
     std::string webPassword = WEB_AUTH_PASSWORD;
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(misc_config_t, deviceName, otaPasswd, hk_key_color, setupCode, lockAlwaysUnlock, lockAlwaysLock, controlPin, hsStatusPin, nfcSuccessPin, nfcSuccessTime, nfcNeopixelPin, neopixelSuccessColor, neopixelFailureColor, neopixelSuccessTime, neopixelFailTime, nfcSuccessHL, nfcFailPin, nfcFailTime, nfcFailHL, gpioActionPin, gpioActionLockState, gpioActionUnlockState, gpioActionMomentaryEnabled, gpioActionMomentaryTimeout, webAuthEnabled, webUsername, webPassword)
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(misc_config_t, deviceName, otaPasswd, hk_key_color, setupCode, lockAlwaysUnlock, lockAlwaysLock, controlPin, hsStatusPin, nfcSuccessPin, nfcSuccessTime, nfcNeopixelPin, neopixelSuccessColor, neopixelFailureColor, neopixelSuccessTime, neopixelFailTime, nfcSuccessHL, nfcFailPin, nfcFailTime, nfcFailHL, gpioActionPin, gpioActionLockState, gpioActionUnlockState, gpioActionMomentaryEnabled, gpioActionMomentaryTimeout, webAuthEnabled, webUsername, webPassword, gpioContactSensorPin)
   } miscConfig;
 };
 
@@ -186,6 +188,15 @@ void with_crc16(unsigned char* data, unsigned int size, unsigned char* result) {
   crc16a(data, size, result);
 }
 
+void contact_sensor_task(void* arg) {
+  uint8_t status = 0;
+  while (1) {
+    if (gpio_contact_sensor_task_handle != nullptr) {
+      LOG(D, "Contact Sensor test %d", status);
+    }
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+  }
+}
 
 void gpio_task(void* arg) {
   uint8_t status = 0;
@@ -1652,7 +1663,7 @@ void setup() {
   homeSpan.enableAutoStartAP();
   homeSpan.enableOTA(espConfig::miscConfig.otaPasswd.c_str());
   homeSpan.setPortNum(1201);
-  homeSpan.begin(Category::Locks, espConfig::miscConfig.deviceName.c_str(), "HK", "HomeKey-ESP32");
+  homeSpan.begin(Category::GarageDoorOpeners, espConfig::miscConfig.deviceName.c_str(), "HK", "HomeKey-ESP32");
 
   new SpanUserCommand('D', "Delete Home Key Data", deleteReaderData);
   new SpanUserCommand('L', "Set Log Level", setLogLevel);
@@ -1702,6 +1713,9 @@ void setup() {
   }
   if (espConfig::miscConfig.gpioActionPin != 255) {
     xTaskCreate(gpio_task, "gpio_task", 4096, NULL, 2, gpio_lock_task_handle);
+  }
+  if (espConfig::miscConfig.gpioContactSensorPin != 255) {
+    xTaskCreate(contact_sensor_task, "contact_sensor_task", 4096, NULL, 2, gpio_contact_sensor_task_handle);
   }
   xTaskCreate(nfc_thread_entry, "nfc_task", 8192, NULL, 1, NULL);
 }

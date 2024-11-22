@@ -63,17 +63,19 @@ enum customLockActions
 #define NEOPIXEL_FAIL_B 0 // Color value for Blue - Fail HK Auth
 #define NEOPIXEL_SUCCESS_TIME 1000 // GPIO Delay time in ms - Success HK Auth
 #define NEOPIXEL_FAIL_TIME 1000 // GPIO Delay time in ms - Success HK Auth
-#define NFC_SUCCESS_PIN 255 // GPIO Pin pulled HIGH or LOW (see NFC_SUCCESS_HL) on success HK Auth
+#define NFC_SUCCESS_PIN 20 // GPIO Pin pulled HIGH or LOW (see NFC_SUCCESS_HL) on success HK Auth
 #define NFC_SUCCESS_HL HIGH // Flag to define if NFC_SUCCESS_PIN should be held High or Low
 #define NFC_SUCCESS_TIME 1000 // How long should NFC_SUCCESS_PIN be held High or Low
 #define NFC_FAIL_PIN 255  // GPIO Pin pulled HIGH or LOW (see NFC_SUCCESS_HL) on failed HK Auth
 #define NFC_FAIL_HL HIGH // Flag to define if NFC_FAIL_PIN should be held High or Low
 #define NFC_FAIL_TIME 1000 // How long should NFC_FAIL_PIN be held High or Low
-#define GPIO_ACTION_PIN 255
+#define GPIO_ACTION_PIN 20
 #define GPIO_ACTION_LOCK_STATE LOW
 #define GPIO_ACTION_UNLOCK_STATE HIGH
 #define GPIO_ACTION_MOMENTARY_STATE false
-#define GPIO_ACTION_MOMENTARY_TIMEOUT 5000
+#define GPIO_ACTION_MOMENTARY_TIMEOUT 1000
+
+#define GPIO_CONTACT_SENSOR_PIN 255
 
 // WebUI
 #define WEB_AUTH_ENABLED false
