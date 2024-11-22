@@ -1749,7 +1749,7 @@ void setup() {
     xTaskCreate(gpio_task, "gpio_task", 4096, NULL, 2, &gpio_lock_task_handle);
   }
   if (espConfig::miscConfig.gpioContactSensorPin != 255) {
-    xTaskCreate(contact_sensor_task, "contact_sensor_task", 4096, NULL, 2, gpio_contact_sensor_task_handle);
+    xTaskCreate(contact_sensor_task, "contact_sensor_task", 4096, NULL, 2, &gpio_contact_sensor_task_handle);
   }
   xTaskCreate(nfc_thread_entry, "nfc_task", 8192, NULL, 1, NULL);
 }
